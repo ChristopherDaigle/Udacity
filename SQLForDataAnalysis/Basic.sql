@@ -86,3 +86,28 @@ FROM
 	accounts
 WHERE
 	name = 'Exxon Mobil';
+
+/* Derived columns */
+SELECT
+	id,
+	(standard_amt_usd/total_amt_usd)*100 AS std_percent,
+	total_amt_usd
+FROM
+	orders
+LIMIT 10;
+
+SELECT
+	id,
+	account_id,
+	(standard_amt_usd/standard_qty)
+FROM
+	orders
+LIMIT 10;
+
+SELECT
+	id,
+	account_id,
+	poster_amt_usd/(standard_amt_usd + gloss_amt_usd + poster_amt_usd) AS poster_rev_perc
+FROM
+	orders
+LIMIT 10;
