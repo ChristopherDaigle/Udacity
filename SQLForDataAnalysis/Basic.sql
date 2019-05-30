@@ -58,7 +58,7 @@ ORDER BY
 -- with equal total dollar amounts would there need
 -- to be any sorting by account ID.
 
-/* Using the Where clause */
+/* Using the WHERE clause */
 SELECT
 	*
 FROM
@@ -111,3 +111,153 @@ SELECT
 FROM
 	orders
 LIMIT 10;
+
+/* LIKE */
+-- LIKE function requires the use of wildcards, %, to indicate any number
+-- of characters leading up to or following the wildcard
+SELECT
+	name
+FROM
+	accounts
+WHERE
+	name LIKE 'C%';
+
+SELECT
+	name
+FROM
+	accounts
+WHERE
+	name LIKE '%one%';
+
+SELECT
+	name
+FROM
+	accounts
+WHERE
+	name LIKE '%s';
+
+/* IN function: filter data on several values*/
+SELECT
+	name,
+	primary_poc,
+	sales_rep_id
+FROM
+	accounts
+WHERE
+	name IN ('Walmart', 'Target', 'Nordstrom');
+
+SELECT
+	*
+FROM
+	web_events
+WHERE
+	channel IN ('organic', 'adwords');
+
+/* NOT function: negation of a function*/
+SELECT
+	name,
+	primary_poc,
+	sales_rep_id
+FROM
+	accounts
+WHERE
+	name NOT IN ('Walmart', 'Target', 'Nordstrom');
+
+SELECT
+	*
+FROM
+	web_events
+WHERE
+	channel NOT IN ('organic', 'adwords');
+
+	SELECT
+		name
+	FROM
+		accounts
+	WHERE
+		name NOT LIKE 'C%';
+
+	SELECT
+		name
+	FROM
+		accounts
+	WHERE
+		name NOT LIKE '%one%';
+
+	SELECT
+		name
+	FROM
+		accounts
+	WHERE
+		name NOT LIKE '%s';
+
+/* AND function: boolean for numerous conditions being pairwise (BETWEEN may
+be useful as well, BETWEEN is inclusive) */
+SELECT
+	*
+FROM
+	orders
+WHERE
+	standard_qty > 1000 AND
+	poster_qty = 0 AND
+	gloss_qty = 0;
+
+SELECT
+	name
+FROM
+	accounts
+WHERE
+	name NOT LIKE 'C%' AND
+	name NOT LIKE '%s';
+
+SELECT
+	occurred_at,
+	gloss_qty
+FROM
+	orders
+WHERE
+	gloss_qty BETWEEN 24 AND 29
+ORDER BY
+	gloss_qty;
+
+SELECT
+	*
+FROM
+	web_events
+WHERE
+	channel IN ('organic', 'adwords') AND
+	occurred_at BETWEEN '2016-01-01' AND '2017-01-01'
+ORDER BY
+	occurred_at ASC;
+
+/* OR function: boolean test for there exists */
+SELECT
+	id
+FROM
+	orders
+WHERE
+	gloss_qty > 4000 OR
+	poster_qty > 4000
+ORDER BY
+	id;
+
+SELECT
+	*
+FROM
+	orders
+WHERE
+	standard_qty = 0 AND
+	(gloss_qty > 1000 OR poster_qty > 1000)
+ORDER BY
+	id;
+
+SELECT
+	*
+FROM
+	accounts
+WHERE
+	(name LIKE 'C%' OR name LIKE 'W%') AND
+	(primary_poc LIKE '%ana%' or primary_poc LIKE '%Ana') AND
+	primary_poc NOT LIKE '%eana%'
+ORDER BY
+	id;
