@@ -157,4 +157,144 @@ JOIN
 ON
   s.region_id = r.id
 WHERE
-  r.name = 'Midwest';
+  r.name = 'Midwest'
+ORDER BY
+  a.name;
+
+SELECT
+  r.name AS Region_name,
+  s.name AS Sales_Rep_Name,
+  a.name AS Account_Name
+FROM
+  accounts AS a
+JOIN
+  sales_reps AS s
+ON
+  a.sales_rep_id = s.id
+JOIN
+  region AS r
+ON
+  s.region_id = r.id
+WHERE
+  r.name = 'Midwest' AND
+  s.name LIKE 'S%'
+ORDER BY
+  a.name;
+
+SELECT
+  r.name AS Region_name,
+  s.name AS Sales_Rep_Name,
+  a.name AS Account_Name
+FROM
+  accounts AS a
+JOIN
+  sales_reps AS s
+ON
+  a.sales_rep_id = s.id
+JOIN
+  region AS r
+ON
+  s.region_id = r.id
+WHERE
+  r.name = 'Midwest' AND
+  s.name LIKE '% K%'
+ORDER BY
+  a.name;
+
+SELECT
+  r.name AS Region_name,
+  a.name AS Account_Name,
+  ROUND((o.total_amt_usd / (o.total + 0.01)),2) AS Unit_Price
+FROM
+  region AS r
+JOIN
+  sales_reps AS s
+ON
+  r.id = s.region_id
+JOIN
+  accounts AS a
+ON
+  s.id = a.sales_rep_id
+JOIN
+  orders AS o
+ON
+  a.id = o.account_id
+WHERE
+  o.standard_qty > 100;
+
+SELECT
+  r.name AS Region_name,
+  a.name AS Account_Name,
+  ROUND((o.total_amt_usd / (o.total + 0.01)),2) AS Unit_Price
+FROM
+  region AS r
+JOIN
+  sales_reps AS s
+ON
+  r.id = s.region_id
+JOIN
+  accounts AS a
+ON
+  s.id = a.sales_rep_id
+JOIN
+  orders AS o
+ON
+  a.id = o.account_id
+WHERE
+  o.standard_qty > 100 AND
+  o.poster_qty > 50
+ORDER BY
+  Unit_Price;
+
+SELECT
+  r.name AS Region_name,
+  a.name AS Account_Name,
+  ROUND((o.total_amt_usd / (o.total + 0.01)),2) AS Unit_Price
+FROM
+  region AS r
+JOIN
+  sales_reps AS s
+ON
+  r.id = s.region_id
+JOIN
+  accounts AS a
+ON
+  s.id = a.sales_rep_id
+JOIN
+  orders AS o
+ON
+  a.id = o.account_id
+WHERE
+  o.standard_qty > 100 AND
+  o.poster_qty > 50
+ORDER BY
+  Unit_Price DESC;
+
+SELECT
+  a.name AS Account_Name,
+  w.channel AS Channel
+FROM
+  accounts AS a
+JOIN
+  web_events AS w
+ON
+  a.id = w.account_id
+WHERE
+  a.id = 1001
+GROUP BY
+  a.name,
+  w.channel;
+
+SELECT
+  o.occurred_at AS Occurred_At,
+  a.name AS Account_Name,
+  o.total AS Total,
+  o.total_amt_usd AS Total_Amt_Usd
+FROM
+  accounts AS a
+JOIN
+  orders AS o
+ON
+  a.id = o.account_id
+WHERE
+  occurred_at BETWEEN '2015-01-01' AND '2015-12-31';
