@@ -1,0 +1,15 @@
+What is machine learning?
+  Teaching computers to learn to perform tasks from past experiences
+  - Experiences are data
+
+Hotkeys for Jupyter Notebook:
+
+Retina display visualizations: %config InlineBackend.figure_format = 'retina'
+    after %matplotlib inline
+
+Debugging is possible too - %pdb and to quit type q in the prompt
+
+Jupyter Notebooks are JSON files
+- they can be converted in the terminal with the command:
+    <jupyer nbconvert --to html notebook.ipynb>
+    <jupyter nbconvert notebook.ipynb --to slides>
