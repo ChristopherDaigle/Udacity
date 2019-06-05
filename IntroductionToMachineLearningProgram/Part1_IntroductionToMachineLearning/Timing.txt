@@ -1,0 +1,6 @@
+Part1 Introduction to Machine Learning
+
+Estimated Time: 1:30 hours
+Reported Time: 1:27
+Expected Misreported Time: 5-7 minutes
+Believed Time: 1:20
