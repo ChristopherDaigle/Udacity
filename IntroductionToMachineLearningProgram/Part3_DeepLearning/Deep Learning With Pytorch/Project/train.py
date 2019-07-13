@@ -1,3 +1,5 @@
+# ../ImageClassifier/flowers
+
 __author__ = "Chris"
 
 import argparse
@@ -13,12 +15,13 @@ from functions import build_classifier, train_model, save_model
 
 # Create parser object and tell it what arguments to expect
 parser = argparse.ArgumentParser(description='NN Trainer')
+# ../ImageClassifier/flowers
 # Specify argument for the training data directory
 parser.add_argument('train_data_dir',
                     action='store',
                     help='Training data path')
 # Specify argument for pretrained neural network
-parser.add_argument('--pretrain',
+parser.add_argument('--arch',
                     action='store',
                     dest='pretrained_model',
                     default='vgg11',
@@ -54,6 +57,14 @@ parser.add_argument('--hidden_units',
                     default=500,
                     help='Number of hidden classifier units; default 500; \
                     int type')
+# Specify argument for the number of classes to categorize
+parser.add_argument('--classes',
+                    action='store',
+                    dest='classes',
+                    type=int,
+                    default=102,
+                    help='Number of classes to categorize; default 102; \
+                    int type')
 # Specify argument for the number of epochs
 parser.add_argument('--epochs',
                     action='store',
@@ -75,9 +86,9 @@ save_dir = results.save_dir
 learning_rate = results.lr
 dropout = results.drop_out
 hidden_units = results.hidden_units
+classes = results.classes
 epochs = results.epochs
 gpu = results.gpu
-pre_trained_model = results.pretrained_model
 ## Completion of argument assignment ##
 
 ## Define data and model specifics
@@ -86,11 +97,12 @@ pre_trained_model = results.pretrained_model
 train_loader, valid_loader, test_loader, train_data, valid_data, test_data = pipeline(data_dir)
 # Load model
 # Returns the value of the named attribute of an object
-model = gatattr(models, pre_trained_model)(pretrained=True)
+pre_trained_model = results.pretrained_model
+model = getattr(models, pre_trained_model)(pretrained=True)
 
 # Build and attach a new classifier
 input_units = model.classifier[0].in_features
-build_classifier(model, input_units, hidden_units, dropout)
+build_classifier(model, input_units, hidden_units, classes, dropout)
 criterion = nn.NLLLoss()
 optimizer = optim.Adam(model.classifier.parameters(), learning_rate)
 

@@ -68,12 +68,12 @@ pret_model = results.pretrained_model
 model = getattr(models, pret_model)(pretrained=True)
 
 # Load model
-loaded_model = loaded_checkpoint(model, save_dir, gpu)
+loaded_model = load_checkpoint(model, save_dir, gpu)
 
 # Preprocess image (w/ jpeg format)
 processed_img = process_image(image)
 
-if gpu == True
+if gpu == True:
     processed_img = processed_img.to('cuda')
 else:
     pass

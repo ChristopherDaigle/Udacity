@@ -20,22 +20,21 @@ def build_classifier(model, input_units, hidden_units, classes, dropout):
     :return: classified but untrained model
     """
     # Weights of the pretrained model should be frozen so we don't backprop through them
+    # Weights of pretrained model are frozen so we don't backprop through/update them
     for param in model.parameters():
         param.requires_grad = False
 
-    # Define the NN structure
     from collections import OrderedDict
     classifier = nn.Sequential(OrderedDict([
-        'fc1', nn.Linear(input_units, hidden_units),
-        ('relu', nn.ReLU()),
-        ('dropout1', nn.Dropout(dropout)),
-        ('fc2', nn.Linear(hidden_units, classes)),
-        ('output', nn.LogSoftmax(dim=1))
-    ]))
+                              ('fc1', nn.Linear(input_units, hidden_units)),
+                              ('relu', nn.ReLU()),
+                              ('dropout1', nn.Dropout(dropout)),
+                              ('fc2', nn.Linear(hidden_units, classes)),
+                              ('output', nn.LogSoftmax(dim=1))
+                              ]))
 
-    # Replace the pretrained classifier
+    # Replacing the pretrained classifier with the one above
     model.classifier = classifier
-
     return model
 
 
@@ -235,7 +234,7 @@ def predict(processed_image, loaded_model, topk, gpu):
     # Load index and class mapping
     class_to_idx = loaded_model.class_to_idx
     # Invert index-class dictionary: y is a class and x is an index
-    indx_to_class = {x: y for y, x in class_to idx.items()}
+    indx_to_class = {x: y for y, x in class_to_idx.items()}
 
     # Convert index list to class list
     classes_top_list = []
