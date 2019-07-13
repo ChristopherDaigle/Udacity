@@ -1,15 +1,15 @@
-__author__ "Chris"
+__author__ = "Chris"
 
 import argparse
 
-import torch
 import numpy as np
+import torch
 from torch import nn, optim
 import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 
 from utilities import pipeline
-from functions import build_classifier
+from functions import build_classifier, train_model, save_model
 
 # Create parser object and tell it what arguments to expect
 parser = argparse.ArgumentParser(description='NN Trainer')
@@ -21,7 +21,7 @@ parser.add_argument('train_data_dir',
 parser.add_argument('--pretrain',
                     action='store',
                     dest='pretrained_model',
-                    default='vg11',
+                    default='vgg11',
                     help = 'Pretrained model to implement; defaults to VGG-11; \
                     can work with VGG and Densenet architectures')
 # Specify argument to store model checkpoint
