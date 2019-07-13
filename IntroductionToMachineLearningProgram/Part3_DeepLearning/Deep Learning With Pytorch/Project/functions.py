@@ -243,4 +243,3 @@ def predict(processed_image, loaded_model, topk, gpu):
         classes_top_list += [indx_to_class[index]]
 
     return probs_top_list, classes_top_list
-

@@ -47,3 +47,31 @@ def pipeline(data_dir):
                                               batch_size=32)
 
     return train_loader, valid_loader, test_loader, train_data, valid_data, test_data
+
+
+def process_image(image):
+    """
+    Function to process an image
+
+    :param image:
+    :return: NumPy array
+    """
+    # Convert image to PIL image from file path
+    pil_im = Image.open(f'{image}' + '.jpg')
+    # Image transform framework
+    transform = transforms.Compose(
+        [transforms.Resize(225),
+         transforms.CenterCrop(224),
+         transforms.ToTensor(),
+         transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                              std=[0.229, 0.224, 0.225])])
+    # Transform the image
+    pil_tfd = transform(pil_im)
+    # Convert to NumPy Array
+    array_im_tfd = np.array(pil_tfd)
+    # Conver to torch from NumPy array
+    img_tensor = torch.from_numpy(array_im_tfd).type(torch.FloatTensor)
+    # Add dimensions for (B x C x W x H) input of model
+    img_add_dim = img_tensor.unsqueeze_(0)
+
+    return img_add_dim
