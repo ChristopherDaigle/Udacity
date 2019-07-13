@@ -182,3 +182,24 @@ def save_model(model, train_data, optimizer, save_dir, epochs):
                   'num_epochs': epochs}
 
     return torch.save(checkpoint, save_dir)
+
+
+def load_checkpoint(model, save_dir, gpu):
+    """
+    Function to load the saved state of a trained model
+
+    :param model: trained model
+    :param save_dir: directory of saved state
+    :param gpu: gpu mode (T/F)
+    :return: model with previously trained values
+    """
+    if gpu == True:
+        checkpoint = torch.load(save_dir)
+    else:
+        pass
+
+    model.classifier = checkpoint['classifier']
+    model.load_state_dict(checkpoint['state_dict'])
+    model.class_to_idx = checkpoint['class_to_idx']
+
+    return model
