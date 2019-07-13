@@ -83,7 +83,7 @@ def train_model(model, epochs, train_loader, valid_loader, criterion, optimizer,
     :param criterion: loss function
     :param optimizer: optimization method
     :param gpu: gpu mode (T/F)
-    :return:
+    :return: trained model and optimizer
     """
     steps = 0
     print_every = 10
@@ -93,7 +93,7 @@ def train_model(model, epochs, train_loader, valid_loader, criterion, optimizer,
     else:
         pass
 
-    for e in range(epochs):
+    for epoch in range(epochs):
         running_loss = 0
 
         for ii, (inputs, labels) in enumerate(train_loader):
@@ -130,3 +130,55 @@ def train_model(model, epochs, train_loader, valid_loader, criterion, optimizer,
                 # Turn training mode back on
                 model.train()
     return model, optimizer
+
+
+def test_model(model, test_loader, gpu):
+    """
+    Function to test NN
+
+    :param model: type of model
+    :param test_loader: transformed test data
+    :param gpu: gpu mode (T/F)
+    """
+    correct = 0
+    total = 0
+
+    if gpu == True:
+        model.to('cuda')
+    else:
+        pass
+
+    with torch.no_grad():
+        for ii, (images, labels) in enumerate(test_loader):
+
+            if gpu == True:
+                images, labels = images.to('cuda'), labels.to('cuda')
+            else:
+                pass
+
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+    print(f"Test accuracy of model for {total} images : {round(100* correct / total, 3)}%")
+
+
+def save_model(model, train_data, optimizer, save_dir, epochs):
+    """
+    Function to save the information/checkpoint of the model
+
+    :param model: trained model
+    :param train_data: data trained upon
+    :param optimizer: optimization method
+    :param save_dir: directory to save to
+    :param epochs: number of epochs in training
+    :return: checkpoint
+    """
+    checkpoint = {'state_dict': model.state_dict(),
+                  'classifier': model.classifier,
+                  'class_to_idx': train_data.class_to_idx,
+                  'opt_state': optimizer.state_dict,
+                  'num_epochs': epochs}
+
+    return torch.save(checkpoint, save_dir)
