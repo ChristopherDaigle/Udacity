@@ -203,3 +203,44 @@ def load_checkpoint(model, save_dir, gpu):
     model.class_to_idx = checkpoint['class_to_idx']
 
     return model
+
+
+def predict(processed_image, loaded_model, topk, gpu):
+    """
+    Function to predict the class of an image using a trained NN
+
+    :param processed_image: image that has been transformed
+    :param loaded_model: trained model
+    :param topk: highest probability of classification
+    :param gpu: gpu mode (T/F)
+    :return: lists of the top probabilities and classes
+    """
+    loaded_model.eval()
+
+    if gpu == True:
+        loaded_model.to('cuda')
+    else:
+        loaded_model.cpu()
+
+    with torch.no_grad():
+        outputs = loaded_model.forward(processed_image)
+
+    probs = torch.exp(outputs)
+    probs_top = probs.topk(topk)[0]
+    index_top = probs.topk(topk)[1]
+
+    probs_top_list = np.array(probs_top)[0]
+    index_top_list = np.array(index_top[0])
+
+    # Load index and class mapping
+    class_to_idx = loaded_model.class_to_idx
+    # Invert index-class dictionary: y is a class and x is an index
+    indx_to_class = {x: y for y, x in class_to idx.items()}
+
+    # Convert index list to class list
+    classes_top_list = []
+    for index in index_top_list:
+        classes_top_list += [indx_to_class[index]]
+
+    return probs_top_list, classes_top_list
+
