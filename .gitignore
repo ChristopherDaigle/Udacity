@@ -104,3 +104,7 @@ venv.bak/
 .mypy_cache/
 
 .DS_Store
+
+IntroductionToMachineLearningProgram/Part4_UnsupervisedLearning/Project/Udacity_CUSTOMERS_Subset.csv
+IntroductionToMachineLearningProgram/Part4_UnsupervisedLearning/Project/Udacity_AZDIAS_Subset.csv
+IntroductionToMachineLearningProgram/Part4_UnsupervisedLearning/Project/AZDIAS_Feature_Summary.csv
