@@ -113,3 +113,51 @@ FROM (SELECT total_amt_usd
       LIMIT 3457) AS Table1
 ORDER BY total_amt_usd DESC
 LIMIT 2;
+
+/* GROUP BY - Any columns not being aggregated upon should appear
+ in the group by */
+SELECT
+  account_id,
+  SUM(standard_qty) AS standard_sum,
+  SUM(gloss_qty) AS gloss_Sum
+  SUM(poster_qty) AS poster_sum
+FROM
+  orders
+GROUP BY
+  account_id
+ORDER BY
+  account_id
+
+/* GROUP BY Quiz */
+-- 1
+SELECT
+	a.name AS account_name,
+    o.occurred_at as date
+ FROM
+ 	accounts as A
+LEFT JOIN
+	orders as O
+ON
+	A.ID = O.ID
+GROUP BY
+	account_name,
+    occurred_at
+ORDER BY
+	date
+LIMIT 1;
+-- Answer: Guardian Life Ins. Co. of America
+-- 2
+SELECT
+	a.name AS account_name,
+    SUM(o.total) as Total_Sales
+ FROM
+ 	accounts as A
+LEFT JOIN
+	orders as O
+ON
+	A.ID = O.ID
+GROUP BY
+	account_name
+ORDER BY
+	total_sales DESC;
+-- 3
